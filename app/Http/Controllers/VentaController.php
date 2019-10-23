@@ -67,9 +67,9 @@ class VentaController extends Controller
         if (!$request->ajax()) return redirect('/');
 
         $id = $request->id;
-        $detalles = DetalleVenta::join('articulos','detalle_ventas.idarticulo','=','articulos.id')
+        $detalles = DetalleVenta::join('productos','detalle_ventas.idproducto','=','productos.id')
         ->select('detalle_ventas.cantidad','detalle_ventas.precio','detalle_ventas.descuento',
-        'articulos.nombre as articulo')
+        'productos.nombre as producto')
         ->where('detalle_ventas.idventa','=',$id)
         ->orderBy('detalle_ventas.id', 'desc')->get();
         
@@ -86,9 +86,9 @@ class VentaController extends Controller
         ->where('ventas.id','=',$id)
         ->orderBy('ventas.id', 'desc')->take(1)->get();
 
-        $detalles = DetalleVenta::join('articulos','detalle_ventas.idarticulo','=','articulos.id')
+        $detalles = DetalleVenta::join('productos','detalle_ventas.idproducto','=','productos.id')
         ->select('detalle_ventas.cantidad','detalle_ventas.precio','detalle_ventas.descuento',
-        'articulos.nombre as articulo')
+        'productos.nombre as producto')
         ->where('detalle_ventas.idventa','=',$id)
         ->orderBy('detalle_ventas.id', 'desc')->get();
 
@@ -126,7 +126,7 @@ class VentaController extends Controller
             {
                 $detalle = new DetalleVenta();
                 $detalle->idventa = $venta->id;
-                $detalle->idarticulo = $det['idarticulo'];
+                $detalle->idproducto = $det['idproducto'];
                 $detalle->cantidad = $det['cantidad'];
                 $detalle->precio = $det['precio'];
                 $detalle->descuento = $det['descuento'];         
@@ -147,11 +147,11 @@ class VentaController extends Controller
                         'msj' => 'Ingresos' 
                     ] 
             ];                
-            $allUsers = User::all();
+        /*    $allUsers = User::all();
 
             foreach ($allUsers as $notificar) { 
                 User::findOrFail($notificar->id)->notify(new NotifyAdmin($arregloDatos)); 
-            }
+            }*/
             
             DB::commit();
             return [

@@ -66,8 +66,8 @@ class IngresoController extends Controller
         if (!$request->ajax()) return redirect('/');
 
         $id = $request->id;
-        $detalles = DetalleIngreso::join('articulos','detalle_ingresos.idarticulo','=','articulos.id')
-        ->select('detalle_ingresos.cantidad','detalle_ingresos.precio','articulos.nombre as articulo')
+        $detalles = DetalleIngreso::join('productos','detalle_ingresos.idproducto','=','productos.id')
+        ->select('detalle_ingresos.cantidad','detalle_ingresos.precio','productos.nombre as producto')
         ->where('detalle_ingresos.idingreso','=',$id)
         ->orderBy('detalle_ingresos.id', 'desc')->get();
         
@@ -102,7 +102,7 @@ class IngresoController extends Controller
             {
                 $detalle = new DetalleIngreso();
                 $detalle->idingreso = $ingreso->id;
-                $detalle->idarticulo = $det['idarticulo'];
+                $detalle->idproducto = $det['idproducto'];
                 $detalle->cantidad = $det['cantidad'];
                 $detalle->precio = $det['precio'];          
                 $detalle->save();
@@ -122,11 +122,11 @@ class IngresoController extends Controller
                         'msj' => 'Ingresos' 
                     ] 
             ];                
-            $allUsers = User::all();
+           /* $allUsers = User::all();
 
             foreach ($allUsers as $notificar) { 
                 User::findOrFail($notificar->id)->notify(new NotifyAdmin($arregloDatos)); 
-            }        
+            } */       
 
 
             DB::commit();

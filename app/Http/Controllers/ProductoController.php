@@ -44,7 +44,7 @@ class ProductoController extends Controller
         ];
     }
 
-    public function listarArticulo(Request $request)
+    public function listarProducto(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
 
@@ -52,22 +52,22 @@ class ProductoController extends Controller
         $criterio = $request->criterio;
         
         if ($buscar==''){
-            $articulos = Articulo::join('categorias','articulos.idcategoria','=','categorias.id')
-            ->select('articulos.id','articulos.idcategoria','articulos.codigo','articulos.nombre','categorias.nombre as nombre_categoria','articulos.precio_venta','articulos.stock','articulos.descripcion','articulos.condicion')
-            ->orderBy('articulos.id', 'desc')->paginate(10);
+            $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
+            ->select('productos.id','productos.idcategoria','productos.codbarras','productos.nombre','categorias.nombre as nombre_categoria','productos.precio_venta','productos.stock','productos.descripcion','productos.condicion')
+            ->orderBy('productos.id', 'desc')->paginate(10);
         }
         else{
-            $articulos = Articulo::join('categorias','articulos.idcategoria','=','categorias.id')
-            ->select('articulos.id','articulos.idcategoria','articulos.codigo','articulos.nombre','categorias.nombre as nombre_categoria','articulos.precio_venta','articulos.stock','articulos.descripcion','articulos.condicion')
-            ->where('articulos.'.$criterio, 'like', '%'. $buscar . '%')
-            ->orderBy('articulos.id', 'desc')->paginate(10);
+            $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
+            ->select('productos.id','productos.idcategoria','productos.codbarras','productos.nombre','categorias.nombre as nombre_categoria','productos.precio_venta','productos.stock','productos.descripcion','productos.condicion')
+            ->where('productos.'.$criterio, 'like', '%'. $buscar . '%')
+            ->orderBy('productos.id', 'desc')->paginate(10);
         }
         
 
-        return ['articulos' => $articulos];
+        return ['productos' => $productos];
     }
  
-    public function listarArticuloVenta(Request $request)
+    public function listarProductoVenta(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
 
@@ -75,57 +75,56 @@ class ProductoController extends Controller
         $criterio = $request->criterio;
         
         if ($buscar==''){
-            $articulos = Articulo::join('categorias','articulos.idcategoria','=','categorias.id')
-            ->select('articulos.id','articulos.idcategoria','articulos.codigo','articulos.nombre','categorias.nombre as nombre_categoria','articulos.precio_venta','articulos.stock','articulos.descripcion','articulos.condicion')
-            ->where('articulos.stock','>','0')
-            ->orderBy('articulos.id', 'desc')->paginate(10);
+            $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
+            ->select('productos.id','productos.idcategoria','productos.codbarras','productos.nombre','categorias.nombre as nombre_categoria','productos.precio_venta','productos.stock','productos.descripcion','productos.condicion')
+            ->where('productos.stock','>','0')
+            ->orderBy('productos.id', 'desc')->paginate(10);
         }
         else{
-            $articulos = Articulo::join('categorias','articulos.idcategoria','=','categorias.id')
-            ->select('articulos.id','articulos.idcategoria','articulos.codigo','articulos.nombre','categorias.nombre as nombre_categoria','articulos.precio_venta','articulos.stock','articulos.descripcion','articulos.condicion')
-            ->where('articulos.'.$criterio, 'like', '%'. $buscar . '%')
-            ->where('articulos.stock','>','0')
-            ->orderBy('articulos.id', 'desc')->paginate(10);
+            $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
+            ->select('productos.id','productos.idcategoria','productos.codbarras','productos.nombre','categorias.nombre as nombre_categoria','productos.precio_venta','productos.stock','productos.descripcion','productos.condicion')
+            ->where('productos.'.$criterio, 'like', '%'. $buscar . '%')
+            ->where('productos.stock','>','0')
+            ->orderBy('productos.id', 'desc')->paginate(10);
         }
         
 
-        return ['articulos' => $articulos];
+        return ['productos' => $productos];
     }
 
     public function listarPdf(){
-        $articulos = Articulo::join('categorias','articulos.idcategoria','=','categorias.id')
-            ->select('articulos.id','articulos.idcategoria','articulos.codigo','articulos.nombre',
-            'categorias.nombre as nombre_categoria','articulos.precio_venta','articulos.stock',
-            'articulos.descripcion','articulos.condicion')
-            ->orderBy('articulos.nombre', 'desc')->get();
+        $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
+            ->select('productos.id','productos.idcategoria','productos.codbarras','productos.nombre','categorias.nombre as categoria','productos.descripcion',
+            'productos.talla','productos.precio_venta','productos.precio_alquiler','productos.stock','productos.condicion')
+            ->orderBy('productos.nombre', 'desc')->get();
 
-        $cont=Articulo::count();
+        $cont=Producto::count();
 
-        $pdf = \PDF::loadView('pdf.articulospdf',['articulos'=>$articulos,'cont'=>$cont]);
-        return $pdf->download('articulos.pdf');
+        $pdf = \PDF::loadView('pdf.productospdf',['productos'=>$productos,'cont'=>$cont]);
+        return $pdf->download('productos.pdf');
     }
 
-    public function buscarArticulo(Request $request){
+    public function buscarProducto(Request $request){
         if (!$request->ajax()) return redirect('/');
 
         $filtro = $request->filtro;
-        $articulos = Articulo::where('codigo','=', $filtro)
+        $productos = Producto::where('codbarras','=', $filtro)
         ->select('id','nombre')->orderBy('nombre', 'asc')->take(1)->get();
 
-        return ['articulos' => $articulos];
+        return ['productos' => $productos];
     }
 
-    public function buscarArticuloVenta(Request $request){
+    public function buscarProductoVenta(Request $request){
         if (!$request->ajax()) return redirect('/');
 
         $filtro = $request->filtro;
-        $articulos = Articulo::where('codigo','=', $filtro)
+        $productos = Producto::where('codbarras','=', $filtro)
         ->select('id','nombre','stock','precio_venta')
         ->where('stock','>','0')
         ->orderBy('nombre', 'asc')
         ->take(1)->get();
 
-        return ['articulos' => $articulos];
+        return ['productos' => $productos];
     }
     
     public function store(Request $request)

@@ -155,11 +155,11 @@
                         <div class="form-group row border">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Artículo <span style="color:red;" v-show="idarticulo==0">(*Seleccione)</span></label>
+                                    <label>Producto <span style="color:red;" v-show="idproducto==0">(*Seleccione)</span></label>
                                     <div class="form-inline">
-                                        <input type="text" class="form-control" v-model="codigo" @keyup.enter="buscarArticulo()" placeholder="Ingrese artículo">
+                                        <input type="text" class="form-control" v-model="codbarras" @keyup.enter="buscarProducto()" placeholder="Ingrese artículo">
                                         <button @click="abrirModal()" class="btn btn-primary">...</button>
-                                        <input type="text" readonly class="form-control" v-model="articulo">
+                                        <input type="text" readonly class="form-control" v-model="producto">
                                     </div>                                    
                                 </div>
                             </div>
@@ -207,10 +207,10 @@
                                                     <i class="icon-close"></i>
                                                 </button>
                                             </td>
-                                            <td v-text="detalle.articulo">
+                                            <td v-text="detalle.producto">
                                             </td>
-                                            <td>
-                                                <input v-model="detalle.precio" type="number" class="form-control">
+                                            <td v-text="detalle.precio">
+                                                <!--<input v-model="detalle.precio" type="number" class="form-control">-->
                                             </td>
                                             <td>
                                                 <span style="color:red;" v-show="detalle.cantidad>detalle.stock">Stock: {{detalle.stock}}</span>
@@ -294,7 +294,7 @@
                                 <table class="table table-bordered table-striped table-sm">
                                     <thead>
                                         <tr>
-                                            <th>Artículo</th>
+                                            <th>Producto</th>
                                             <th>Precio</th>
                                             <th>Cantidad</th>
                                             <th>Descuento</th>
@@ -303,7 +303,7 @@
                                     </thead>
                                     <tbody v-if="arrayDetalle.length">
                                         <tr v-for="detalle in arrayDetalle" :key="detalle.id">
-                                            <td v-text="detalle.articulo">
+                                            <td v-text="detalle.producto">
                                             </td>
                                             <td v-text="detalle.precio">
                                             </td>
@@ -369,8 +369,8 @@
                                         <option value="descripcion">Descripción</option>
                                         <option value="codigo">Código</option>
                                         </select>
-                                        <input type="text" v-model="buscarA" @keyup.enter="listarArticulo(buscarA,criterioA)" class="form-control" placeholder="Texto a buscar">
-                                        <button type="submit" @click="listarArticulo(buscarA,criterioA)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                        <input type="text" v-model="buscarA" @keyup.enter="listarProducto(buscarA,criterioA)" class="form-control" placeholder="Texto a buscar">
+                                        <button type="submit" @click="listarProducto(buscarA,criterioA)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                                     </div>
                                 </div>
                             </div>
@@ -388,19 +388,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="articulo in arrayArticulo" :key="articulo.id">
+                                        <tr v-for="producto in arrayProducto" :key="producto.id">
                                             <td>
-                                                <button type="button" @click="agregarDetalleModal(articulo)" class="btn btn-success btn-sm">
+                                                <button type="button" @click="agregarDetalleModal(producto)" class="btn btn-success btn-sm">
                                                 <i class="icon-check"></i>
                                                 </button>
                                             </td>
-                                            <td v-text="articulo.codigo"></td>
-                                            <td v-text="articulo.nombre"></td>
-                                            <td v-text="articulo.nombre_categoria"></td>
-                                            <td v-text="articulo.precio_venta"></td>
-                                            <td v-text="articulo.stock"></td>
+                                            <td v-text="producto.codbarras"></td>
+                                            <td v-text="producto.nombre"></td>
+                                            <td v-text="producto.nombre_categoria"></td>
+                                            <td v-text="producto.precio_venta"></td>
+                                            <td v-text="producto.stock"></td>
                                             <td>
-                                                <div v-if="articulo.condicion">
+                                                <div v-if="producto.condicion">
                                                     <span class="badge badge-success">Activo</span>
                                                 </div>
                                                 <div v-else>
@@ -464,10 +464,10 @@
                 buscar : '',
                 criterioA:'nombre',
                 buscarA: '',
-                arrayArticulo: [],
-                idarticulo: 0,
-                codigo: '',
-                articulo: '',
+                arrayProducto: [],
+                idproducto: 0,
+                codbarras: '',
+                producto: '',
                 precio: 0,
                 cantidad:0,
                 descuento: 0,
@@ -545,23 +545,23 @@
                 me.loading = true;
                 me.idcliente = val1.id;
             },
-            buscarArticulo(){
+            buscarProducto(){
                 let me=this;
-                var url= '/articulo/buscarArticuloVenta?filtro=' + me.codigo;
+                var url= '/producto/buscarProductoVenta?filtro=' + me.codbarras;
 
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
-                    me.arrayArticulo = respuesta.articulos;
+                    me.arrayProducto = respuesta.productos;
 
-                    if (me.arrayArticulo.length>0){
-                        me.articulo=me.arrayArticulo[0]['nombre'];
-                        me.idarticulo=me.arrayArticulo[0]['id'];
-                        me.precio=me.arrayArticulo[0]['precio_venta'];
-                        me.stock=me.arrayArticulo[0]['stock'];
+                    if (me.arrayProducto.length>0){
+                        me.producto=me.arrayProducto[0]['nombre'];
+                        me.idproducto=me.arrayProducto[0]['id'];
+                        me.precio=me.arrayProducto[0]['precio_venta'];
+                        me.stock=me.arrayProducto[0]['stock'];
                     }
                     else{
-                        me.articulo='No existe artículo';
-                        me.idarticulo=0;
+                        me.producto='No existe producto';
+                        me.idproducto=0;
                     }
                 })
                 .catch(function (error) {
@@ -581,7 +581,7 @@
             encuentra(id){
                 var sw=0;
                 for(var i=0;i<this.arrayDetalle.length;i++){
-                    if(this.arrayDetalle[i].idarticulo==id){
+                    if(this.arrayDetalle[i].idproducto==id){
                         sw=true;
                     }
                 }
@@ -593,11 +593,11 @@
             },
             agregarDetalle(){
                 let me=this;
-                if(me.idarticulo==0 || me.cantidad==0 || me.precio==0){
+                if(me.idproducto==0 || me.cantidad==0 || me.precio==0){
                 }
                 else{
-                    if(me.encuentra(me.idarticulo)){
-                        swal({
+                    if(me.encuentra(me.idproducto)){
+                       swal({
                             type: 'error',
                             title: 'Error...',
                             text: 'Ese artículo ya se encuentra agregado!',
@@ -613,16 +613,16 @@
                        } 
                        else{
                            me.arrayDetalle.push({
-                                idarticulo: me.idarticulo,
-                                articulo: me.articulo,
+                                idproducto: me.idproducto,
+                                producto: me.producto,
                                 cantidad: me.cantidad,
                                 precio: me.precio,
                                 descuento: me.descuento,
                                 stock: me.stock
                             });
-                            me.codigo="";
-                            me.idarticulo=0;
-                            me.articulo="";
+                            me.codbarras="";
+                            me.idproducto=0;
+                            me.producto="";
                             me.cantidad=0;
                             me.precio=0;
                             me.descuento=0;
@@ -638,16 +638,16 @@
             agregarDetalleModal(data =[]){
                 let me=this;
                 if(me.encuentra(data['id'])){
-                        swal({
+                       swal({
                             type: 'error',
                             title: 'Error...',
-                            text: 'Ese artículo ya se encuentra agregado!',
+                            text: 'Ese producto ya se encuentra agregado!',
                             })
                     }
                     else{
                        me.arrayDetalle.push({
-                            idarticulo: data['id'],
-                            articulo: data['nombre'],
+                            idproducto: data['id'],
+                            producto: data['nombre'],
                             cantidad: 1,
                             precio: data['precio_venta'],
                             descuento:0,
@@ -655,12 +655,12 @@
                         }); 
                     }
             },
-            listarArticulo (buscar,criterio){
+            listarProducto (buscar,criterio){
                 let me=this;
-                var url= '/articulo/listarArticuloVenta?buscar='+ buscar + '&criterio='+ criterio;
+                var url= '/producto/listarProductoVenta?buscar='+ buscar + '&criterio='+ criterio;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
-                    me.arrayArticulo = respuesta.articulos.data;
+                    me.arrayProducto = respuesta.productos.data;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -691,12 +691,12 @@
                     me.num_comprobante='';
                     me.impuesto=0.18;
                     me.total=0.0;
-                    me.idarticulo=0;
-                    me.articulo='';
+                    me.idproducto=0;
+                    me.producto='';
                     me.cantidad=0;
                     me.precio=0;
                     me.stock=0;
-                    me.codigo='';
+                    me.codbarras='';
                     me.descuento=0;
                     me.arrayDetalle=[];
                     window.open('http://127.0.0.1:8000/venta/pdf/'+ response.data.id + ',' + '_blank');
@@ -713,7 +713,7 @@
                 
                 me.arrayDetalle.map(function(x){
                     if (x.cantidad>x.stock){
-                        art=x.articulo + " con stock insuficiente";
+                        art=x.producto + " con stock insuficiente";
                         me.errorMostrarMsjVenta.push(art);
                     }
                 });
@@ -738,8 +738,8 @@
                 me.num_comprobante='';
                 me.impuesto=0.18;
                 me.total=0.0;
-                me.idarticulo=0;
-                me.articulo='';
+                me.idproducto=0;
+                me.producto='';
                 me.cantidad=0;
                 me.precio=0;
                 me.arrayDetalle=[];
@@ -787,7 +787,7 @@
                 this.tituloModal='';
             }, 
             abrirModal(){               
-                this.arrayArticulo=[];
+                this.arrayProducto=[];
                 this.modal = 1;
                 this.tituloModal = 'Seleccione uno o varios artículos';
             },

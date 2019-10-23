@@ -277,7 +277,7 @@
                 });
             },
             cargarPdf(){
-                window.open('http://127.0.0.1:8000/articulo/listarPdf','_blank');
+                window.open('http://127.0.0.1:8000/producto/listarPdf','_blank');
             },
             selectCategoria(){
                 let me=this;
@@ -339,7 +339,7 @@
                     'precio_venta': this.precio_venta,
                     'precio_alquiler':this.precio_alquiler,
                     'imagen':this.imagen,
-                    'id': this.articulo_id
+                    'id': this.producto_id
                 }).then(function (response) {
                     me.cerrarModal();
                     me.listarProducto(1,'','nombre');
@@ -431,8 +431,8 @@
 
                 if (this.idcategoria==0) this.errorMostrarMsjProducto.push("Seleccione una categoría.");
                 if (!this.nombre) this.errorMostrarMsjProducto.push("El nombre del artículo no puede estar vacío.");
-                if (!this.stock) this.errorMostrarMsjProducto.push("El stock del artículo debe ser un número y no puede estar vacío.");
-                if (!this.precio_venta) this.errorMostrarMsjProducto.push("El precio venta del artículo debe ser un número y no puede estar vacío.");
+                if (!this.stock) this.errorMostrarMsjProducto.push("El stock del producto debe ser un número y no puede estar vacío.");
+                if (!this.precio_venta) this.errorMostrarMsjProducto.push("El precio venta del producto debe ser un número y no puede estar vacío.");
 
                 if (this.errorMostrarMsjProducto.length) this.errorProducto = 1;
 
@@ -481,7 +481,7 @@
                                 this.modal=1;
                                 this.tituloModal='Actualizar Producto';
                                 this.tipoAccion=2;
-                                this.articulo_id=data['id'];
+                                this.producto_id=data['id'];
                                 this.idcategoria=data['idcategoria'];
                                 this.codbarras=data['codbarras'];
                                 this.nombre = data['nombre'];

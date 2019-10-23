@@ -103,7 +103,7 @@
                 me.varIngreso=document.getElementById('ingresos').getContext('2d');
 
                 me.charIngreso = new Chart(me.varIngreso, {
-                    type: 'bar',
+                    type: 'polarArea',
                     data: {
                         labels: me.varMesIngreso,
                         datasets: [{

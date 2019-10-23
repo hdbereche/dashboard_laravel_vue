@@ -119,7 +119,7 @@
             </div>
             <div id="datos">
                 <p id="encabezado">
-                    <b>IncanatoIT</b><br>José Gálvez 1368, Chongoyape - Chiclayo, Perú<br>Telefono:(+51)931742904<br>Email:jcarlos.ad7@gmail.com
+                    <b>IncanatoIT</b><br>José Gálvez 1368, Chongoyape - Chiclayo, Perú<br>Telefono:(+51)931742904<br>Email:infovestidos@gmail.com
                 </p>
             </div>
             <div id="fact">
@@ -185,7 +185,7 @@
                         @foreach ($detalles as $det)
                         <tr>
                             <td>{{$det->cantidad}}</td>
-                            <td>{{$det->articulo}}</td>
+                            <td>{{$det->producto}}</td>
                             <td>{{$det->precio}}</td>
                             <td>{{$det->descuento}}</td>
                             <td>{{$det->cantidad*$det->precio-$det->descuento}}</td>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Reporte de artículos</title>
+    <title>Reporte de Productos</title>
     <style>
         body {
             margin: 0;
@@ -82,7 +82,7 @@
 </head>
 <body>
     <div>
-        <h3>Lista de Artículos <span class="derecha">{{now()}}</span></h3>
+        <h3>Lista de Productos <span class="derecha">{{now()}}</span></h3>
     </div>
     <div>
         <table class="table table-bordered table-striped table-sm">
@@ -91,21 +91,25 @@
                     <th>Código</th>
                     <th>Nombre</th>
                     <th>Categoría</th>
-                    <th>Precio Venta</th>
-                    <th>Stock</th>
                     <th>Descripción</th>
+                    <th>Talla</th>
+                    <th>Precio Venta</th>
+                    <th>Precio Alquiler</th>
+                    <th>Stock</th>
                     <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($articulos as $a)
+                @foreach ($productos as $a)
                 <tr>
-                    <td>{{$a->codigo}}</td>
+                    <td>{{$a->codbarras}}</td>
                     <td>{{$a->nombre}}</td>
                     <td>{{$a->categoria}}</td>
-                    <td>{{$a->precio_venta}}</td>
-                    <td>{{$a->stock}}</td>
                     <td>{{$a->descripcion}}</td>
+                    <td>{{$a->talla}}</td>
+                    <td>{{$a->precio_venta}}</td>
+                    <td>{{$a->precio_alquiler}}</td>
+                    <td>{{$a->stock}}</td>
                     <td>{{$a->condicion?'Activo':'Desactivado'}}</td>
                 </tr>
                 @endforeach                                
