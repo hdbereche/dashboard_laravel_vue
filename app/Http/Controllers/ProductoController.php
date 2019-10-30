@@ -130,7 +130,6 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
-
         $producto = new Producto();
         $producto->idcategoria = $request->idcategoria;
         $producto->codbarras = $request->codbarras;
@@ -140,7 +139,12 @@ class ProductoController extends Controller
         $producto->precio_venta = $request->precio_venta;
         $producto->precio_alquiler = $request->precio_alquiler;
         $producto->stock = $request->stock;
-        $producto->imagen = $request->imagen;
+
+        if($archivo=$request->file('imagen')){
+            $nombre_imagen = $archivo->getClientOriginalName();
+            $archivo->move("imagenes",$nombre_imagen);
+            $producto->imagen = $nombre_imagen;
+        }
         $producto->condicion = '1';
         $producto->save();
     }

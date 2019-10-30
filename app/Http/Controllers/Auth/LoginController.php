@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Persona;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 
 class LoginController extends Controller
 {
@@ -13,9 +16,14 @@ class LoginController extends Controller
     }
 
     public function login(Request $request){
-        $this->validateLogin($request);        
+        $this->validateLogin($request);
 
         if (Auth::attempt(['usuario' => $request->usuario,'password' => $request->password,'condicion'=>1])){
+            $idUsuario = User::where('usuario',$request->usuario)
+                             ->select('id')
+                             ->first();
+            $usuarioNombre  = $this->getNombrePersona($idUsuario->id);
+            $request->session()->put('usuario',$usuarioNombre->nombre);
             return redirect()->route('main');
         }
 
@@ -24,6 +32,17 @@ class LoginController extends Controller
         ->withInput(request(['usuario']));
 
     }
+
+
+     public function getNombrePersona($idUsuarioAutenticado){
+         $personaNombre = Persona::where('id',$idUsuarioAutenticado)
+             ->select('nombre')
+             ->first();
+         return $personaNombre;
+     }
+
+
+
 
     protected function validateLogin(Request $request){
         $this->validate($request,[

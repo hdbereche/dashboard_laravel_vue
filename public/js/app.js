@@ -2329,9 +2329,9 @@ window._ = __webpack_require__(28);
  */
 
 try {
-    //window.$ = window.jQuery = require('jquery');
+  //window.$ = window.jQuery = require('jquery');
 
-    __webpack_require__(30);
+  __webpack_require__(30);
 } catch (e) {}
 
 /**
@@ -2353,9 +2353,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 /**
@@ -2369,10 +2369,10 @@ if (token) {
 window.Pusher = __webpack_require__(51);
 
 window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo__["a" /* default */]({
-    broadcaster: 'pusher',
-    key: '3d5f75c50251da8a9871',
-    cluster: 'us2',
-    encrypted: true
+  broadcaster: 'pusher',
+  key: '3d5f75c50251da8a9871',
+  cluster: 'us2',
+  encrypted: true
 });
 
 /***/ }),
@@ -55821,6 +55821,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //Envia la petición para visualizar la data de esa página
             me.listarProducto(page, buscar, criterio);
         },
+        getImage: function getImage(event) {
+            this.imagen = event.target.files[0];
+        },
         registrarProducto: function registrarProducto() {
             if (this.validarProducto()) {
                 return;
@@ -55828,17 +55831,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var me = this;
 
-            axios.post('/producto/registrar', {
-                'idcategoria': this.idcategoria,
-                'codbarras': this.codbarras,
-                'nombre': this.nombre,
-                'descripcion': this.descripcion,
-                'talla': this.talla,
-                'stock': this.stock,
-                'precio_venta': this.precio_venta,
-                'precio_alquiler': this.precio_alquiler,
-                'imagen': this.imagen
-            }).then(function (response) {
+            var data = new FormData();
+            data.append('idcategoria', this.idcategoria);
+            data.append('codbarras', this.codbarras);
+            data.append('nombre', this.nombre);
+            data.append('descripcion', this.descripcion);
+            data.append('talla', this.talla);
+            data.append('stock', this.stock);
+            data.append('precio_venta', this.precio_venta);
+            data.append('precio_alquiler', this.precio_alquiler);
+            data.append('imagen', this.imagen);
+
+            axios.post('/producto/registrar', data).then(function (response) {
                 me.cerrarModal();
                 me.listarProducto(1, '', 'nombre');
             }).catch(function (error) {
@@ -55972,7 +55976,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             case 'registrar':
                                 {
                                     this.modal = 1;
-                                    this.tituloModal = 'Registrar Producto';
+                                    this.tituloModal = 'Registrar Product';
                                     this.idcategoria = 0;
                                     this.nombre_categoria = '';
                                     this.codbarras = '';
@@ -58896,8 +58900,8 @@ var render = function() {
               }
             },
             [
-              _c("i", { staticClass: "icon-plus" }),
-              _vm._v(" Nuevo\n                ")
+              _c("i", { staticClass: "icon-plus" }, [_vm._v("Nuevo")]),
+              _vm._v(" \n                ")
             ]
           ),
           _vm._v(" "),
@@ -59618,7 +59622,23 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    _vm._m(2),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-md-3 form-control-label",
+                          attrs: { for: "text-input" }
+                        },
+                        [_vm._v("Imagen")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-9" }, [
+                        _c("input", {
+                          attrs: { type: "file", accept: "image/*" },
+                          on: { change: _vm.getImage }
+                        })
+                      ])
+                    ]),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -59740,25 +59760,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Stock")]),
         _vm._v(" "),
         _c("th", [_vm._v("Estado")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row" }, [
-      _c(
-        "label",
-        {
-          staticClass: "col-md-3 form-control-label",
-          attrs: { for: "text-input" }
-        },
-        [_vm._v("Imagen")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-9" }, [
-        _c("input", { attrs: { type: "file" } })
       ])
     ])
   }

@@ -10,7 +10,7 @@
                     <div class="card-header">
                         <i class="fa fa-align-justify"></i> Productos
                         <button type="button" @click="abrirModal('producto','registrar')" class="btn btn-secondary">
-                            <i class="icon-plus"></i>&nbsp;Nuevo
+                            <i class="icon-plus">Nuevo</i>&nbsp;
                         </button>
                         <button type="button" @click="cargarPdf()" class="btn btn-info">
                             <i class="icon-doc"></i>&nbsp;Reporte
@@ -168,7 +168,7 @@
                                  <div class="form-group row">
                                     <label class="col-md-3 form-control-label" for="text-input">Imagen</label>
                                     <div class="col-md-9">
-                                        <input type='file' >                                        
+                                        <input type='file' @change="getImage" accept="image/*">
                                     </div>
                                 </div>
                                 <div v-show="errorProducto" class="form-group row div-error">
@@ -298,6 +298,11 @@
                 //Envia la petición para visualizar la data de esa página
                 me.listarProducto(page,buscar,criterio);
             },
+
+            getImage(event){
+                this.imagen = event.target.files[0];
+            },
+
             registrarProducto(){
                 if (this.validarProducto()){
                     return;
@@ -305,17 +310,19 @@
                 
                 let me = this;
 
-                axios.post('/producto/registrar',{
-                    'idcategoria': this.idcategoria,
-                    'codbarras': this.codbarras,
-                    'nombre': this.nombre,
-                    'descripcion':this.descripcion,
-                    'talla':this.talla,
-                    'stock': this.stock,
-                    'precio_venta': this.precio_venta,
-                    'precio_alquiler':this.precio_alquiler,
-                    'imagen':this.imagen
-                }).then(function (response) {
+                let data = new FormData()
+                data.append('idcategoria',this.idcategoria)
+                data.append('codbarras',this.codbarras)
+                data.append('nombre',this.nombre)
+                data.append('descripcion',this.descripcion)
+                data.append('talla',this.talla)
+                data.append('stock',this.stock)
+                data.append('precio_venta',this.precio_venta)
+                data.append('precio_alquiler',this.precio_alquiler)
+                data.append('imagen',this.imagen)
+
+                axios.post('/producto/registrar', data)
+                 .then(function (response) {
                     me.cerrarModal();
                     me.listarProducto(1,'','nombre');
                 }).catch(function (error) {
@@ -461,7 +468,7 @@
                             case 'registrar':
                             {
                                 this.modal = 1;
-                                this.tituloModal = 'Registrar Producto';
+                                this.tituloModal = 'Registrar Product';
                                 this.idcategoria=0;
                                 this.nombre_categoria='';
                                 this.codbarras='';
