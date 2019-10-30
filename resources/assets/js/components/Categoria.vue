@@ -377,6 +377,7 @@
     .modal-content{
         width: 100% !important;
         position: absolute !important;
+      
     }
     .mostrar{
         display: list-item !important;

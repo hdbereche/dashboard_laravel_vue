@@ -91,7 +91,9 @@ Route::group(['middleware'=>['auth']],function(){
         Route::get('/producto/buscarProducto', 'ProductoController@buscarProducto');
         Route::get('/producto/listarProducto', 'ProductoController@listarProducto');
         Route::get('/producto/buscarProductoVenta', 'ProductoController@buscarProductoVenta');
+        Route::get('/producto/buscarProductoAlquiler', 'ProductoController@buscarProductoAlquiler');
         Route::get('/producto/listarProductoVenta', 'ProductoController@listarProductoVenta');
+        Route::get('/producto/listarProductoAlquiler', 'ProductoController@listarProductoAlquiler');
         Route::get('/producto/listarPdf','ProductoController@listarPdf')->name('productos_pdf');
 
         Route::get('/proveedor', 'ProveedorController@index');
@@ -117,6 +119,15 @@ Route::group(['middleware'=>['auth']],function(){
         Route::get('/venta/obtenerDetalles', 'VentaController@obtenerDetalles');
         Route::get('/venta/pdf/{id}','VentaController@pdf')->name('venta_pdf');
 
+        Route::get('/prestamo', 'PrestamoController@index');
+        Route::get('/prestamo/alquilados', 'PrestamoController@alquilados');
+        Route::post('/prestamo/registrar', 'PrestamoController@store');
+        Route::put('/prestamo/desactivar', 'PrestamoController@desactivar');
+        Route::put('/prestamo/devolver', 'PrestamoController@devolver');
+        Route::get('/prestamo/obtenerCabecera', 'PrestamoController@obtenerCabecera');
+        Route::get('/prestamo/obtenerDetalles', 'PrestamoController@obtenerDetalles');
+        Route::get('/prestamo/pdf/{id}','PrestamoController@pdf')->name('prestamo_pdf');
+
         Route::get('/rol', 'RolController@index');
         Route::get('/rol/selectRol', 'RolController@selectRol');
         
@@ -125,6 +136,7 @@ Route::group(['middleware'=>['auth']],function(){
         Route::put('/user/actualizar', 'UserController@update');
         Route::put('/user/desactivar', 'UserController@desactivar');
         Route::put('/user/activar', 'UserController@activar');
+        Route::get('/login/datos', 'LoginController@datosUsuario');
     });
 
 });

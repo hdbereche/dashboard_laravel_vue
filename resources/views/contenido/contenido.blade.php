@@ -32,26 +32,34 @@
             </template>
 
             <template v-if="menu==7">
-                <user></user>
+                <devoluciones></devoluciones>
             </template>
 
             <template v-if="menu==8">
-                <rol></rol>
+                <prestamo></prestamo>
             </template>
 
             <template v-if="menu==9">
-                <consultaingreso></consultaingreso>
+                <user></user>
             </template>
 
             <template v-if="menu==10">
-                <consultaventa></consultaventa>
+                <rol></rol>
             </template>
 
             <template v-if="menu==11">
-                <h1>Ayuda</h1>
+                <consultaingreso></consultaingreso>
             </template>
 
             <template v-if="menu==12">
+                <consultaventa></consultaventa>
+            </template>
+
+            <template v-if="menu==13">
+                <h1>Ayuda</h1>
+            </template>
+
+            <template v-if="menu==14">
                 <h1>Acerca de</h1>
             </template>
             @elseif (Auth::user()->idrol == 2)
@@ -65,15 +73,23 @@
             <template v-if="menu==6">
                 <cliente></cliente>
             </template>
-            <template v-if="menu==10">
+
+            <template v-if="menu==7">
+                devolucion
+            </template>
+
+            <template v-if="menu==8">
+                <prestamo></prestamo>
+            </template>
+            <template v-if="menu==12">
                 <consultaventa></consultaventa>
             </template>
 
-            <template v-if="menu==11">
+            <template v-if="menu==13">
                 <h1>Ayuda</h1>
             </template>
 
-            <template v-if="menu==12">
+            <template v-if="menu==14">
                 <h1>Acerca de</h1>
             </template>
             @elseif (Auth::user()->idrol == 3)
@@ -95,14 +111,14 @@
             <template v-if="menu==4">
                 <proveedor></proveedor>
             </template>
-            <template v-if="menu==9">
+            <template v-if="menu==11">
                 <consultaingreso></consultaingreso>
             </template>
-            <template v-if="menu==11">
+            <template v-if="menu==13">
                 <h1>Ayuda</h1>
             </template>
 
-            <template v-if="menu==12">
+            <template v-if="menu==14">
                 <h1>Acerca de</h1>
             </template>
             @else
