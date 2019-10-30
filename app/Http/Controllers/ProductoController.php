@@ -92,6 +92,31 @@ class ProductoController extends Controller
         return ['productos' => $productos];
     }
 
+    public function listarProductoAlquiler(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
+        
+        if ($buscar==''){
+            $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
+            ->select('productos.id','productos.idcategoria','productos.codbarras','productos.nombre','categorias.nombre as nombre_categoria','productos.precio_alquiler','productos.stock','productos.descripcion','productos.condicion')
+            ->where('productos.stock','>','0')
+            ->orderBy('productos.id', 'desc')->paginate(10);
+        }
+        else{
+            $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
+            ->select('productos.id','productos.idcategoria','productos.codbarras','productos.nombre','categorias.nombre as nombre_categoria','productos.precio_alquiler','productos.stock','productos.descripcion','productos.condicion')
+            ->where('productos.'.$criterio, 'like', '%'. $buscar . '%')
+            ->where('productos.stock','>','0')
+            ->orderBy('productos.id', 'desc')->paginate(10);
+        }
+        
+
+        return ['productos' => $productos];
+    }
+
     public function listarPdf(){
         $productos = Producto::join('categorias','productos.idcategoria','=','categorias.id')
             ->select('productos.id','productos.idcategoria','productos.codbarras','productos.nombre','categorias.nombre as categoria','productos.descripcion',
@@ -120,6 +145,19 @@ class ProductoController extends Controller
         $filtro = $request->filtro;
         $productos = Producto::where('codbarras','=', $filtro)
         ->select('id','nombre','stock','precio_venta')
+        ->where('stock','>','0')
+        ->orderBy('nombre', 'asc')
+        ->take(1)->get();
+
+        return ['productos' => $productos];
+    }
+
+    public function buscarProductoAlquiler(Request $request){
+        if (!$request->ajax()) return redirect('/');
+
+        $filtro = $request->filtro;
+        $productos = Producto::where('codbarras','=', $filtro)
+        ->select('id','nombre','stock','precio_alquiler')
         ->where('stock','>','0')
         ->orderBy('nombre', 'asc')
         ->take(1)->get();

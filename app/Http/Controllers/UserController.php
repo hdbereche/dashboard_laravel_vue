@@ -121,4 +121,5 @@ class UserController extends Controller
         $user->condicion = '1';
         $user->save();
     }
+
 }
